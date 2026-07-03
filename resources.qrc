@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>xiangce.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>test_sample/111/111_backlight.jpg</file>
+        <file>test_sample/111/111_gaussian_blur.jpg</file>
+        <file>test_sample/111/111_low_contrast.jpg</file>
+        <file>test_sample/111/111_original.jpg</file>
+        <file>test_sample/111/111_overexposed.jpg</file>
+        <file>test_sample/111/111_underexposed.jpg</file>
+        <file>test_sample/222/222_backlight.jpg</file>
+        <file>test_sample/222/222_gaussian_blur.jpg</file>
+        <file>test_sample/222/222_low_contrast.jpg</file>
+        <file>test_sample/222/222_original.jpg</file>
+        <file>test_sample/222/222_overexposed.jpg</file>
+        <file>test_sample/222/222_underexposed.jpg</file>
+        <file>test_sample/333/333_backlight.jpg</file>
+        <file>test_sample/333/333_gaussian_blur.jpg</file>
+        <file>test_sample/333/333_low_contrast.jpg</file>
+        <file>test_sample/333/333_original.jpg</file>
+        <file>test_sample/333/333_overexposed.jpg</file>
+        <file>test_sample/333/333_underexposed.jpg</file>
+        <file>test_sample/fanli/111.png</file>
+    </qresource>
+</RCC>

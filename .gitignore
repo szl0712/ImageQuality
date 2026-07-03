@@ -1,0 +1,20 @@
+# Qt 临时文件
+.qtcreator/
+*.user
+*.pro.user
+build/
+debug/
+release/
+Makefile*
+moc_*.cpp
+ui_*.h
+
+# 编译产物
+*.exe
+*.dll
+*.obj
+*.o
+
+# 系统垃圾文件
+Thumbs.db
+.DS_Store
