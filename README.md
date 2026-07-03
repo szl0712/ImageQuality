@@ -39,16 +39,6 @@
 ### 4.算法验证与测试 
 内置test_sample测试图库，覆盖严重模糊、清晰、欠曝、过曝、低对比度等典型场景；可直观对比不同图像的评分差异；同时记录算法天然误判场景，用于局限性分析。
 
-## 三.评分模块简要说明
-### 1.清晰度模块
-融合拉普拉斯方差、Tenengrad 梯度、边缘占比三项指标，截取图像中心 + 四周共 5 块区域计算，剔除极值后加权融合，经对数与 Sigmoid 映射输出 0-100 分；分为严重模糊、模糊、清晰、非常清晰四档。
-
-### 2.曝光分析模块
-基于灰度直方图分段统计欠曝、暗部、中间调、高光、过曝像素占比，结合画面平均亮度自适应基准打分，综合区间有效度与亮度均值得到 0-100 曝光分；根据过曝 / 欠曝比例划分多档亮度评价。
-
-### 3.对比度模块
-采用 8×8 分块 Michelson 对比度计算，过滤纯色低反差区块，对结果做线性拉伸与人眼 Gamma 矫正转为百分制；分为发灰、适中、层次丰富三档。
-
 ## 三.综合评分计算
 综合总分加权公式：
 `综合总分 = 清晰度得分 × 0.4 + 曝光得分 × 0.35 + 对比度得分 × 0.25`
@@ -59,6 +49,7 @@
 ImageQuality/
 ├── android/                  # Android端NDK、打包编译配置文件
 ├── build/                    # 编译输出目录（Debug/Release程序、exe、apk、依赖库）
+├── lib/                      # Windows运行依赖dll：opencv_world454.dll、libgomp-1.dll
 ├── test_sample/              # 画质算法测试图片样本库
 ├── validation/               # 算法验证、误判反例素材文件夹
 ├── .gitignore                # Git版本控制忽略配置
@@ -76,16 +67,55 @@ ImageQuality/
 └── 约束与决策说明.md          # 开发约束、技术选型与功能取舍记录
 ```
 
-## 五.编译&运行步骤 
-### 1. 前置环境依赖
-编译工具：Qt Creator 11+，套件 Qt 6.5.3；  
-图像处理库：OpenCV 4.5.4，提前配置头文件、库文件路径至.pro；  
-Android 端额外配置：NDK、SDK 对应 Qt6.5.3 版本。  
+## 五.编译&运行前置环境配置
 
-### 2. 运行流程
-使用 Qt Creator 打开 ImageQuality.pro，配置 OpenCV 库依赖后完成编译；
-启动程序，点击「打开图片」，选择本地单张图片；
-软件自动渲染图片预览并执行全量画质分析，底部日志面板展示全部检测数据；
-点击导出按钮，将完整分析报告保存至本地指定目录。
+### 1. 基础编译环境
+
+| 项目 | 说明 |
+|------|------|
+| **编译工具** | Qt Creator 11+，套件 Qt 6.5.3 MinGW（Windows）/ Qt Android 6.5.3 |
+| **图像处理依赖库** | OpenCV 4.5.4 |
+| **Android 额外依赖** | 配套版本 NDK、Android SDK |
+
+### 2. OpenCV 路径配置说明
+
+项目 `.pro` 内使用本地绝对路径，克隆代码后需要自行修改为本地 OpenCV 存放目录。
+
+**Windows 桌面端**
+```pro
+win32 {
+    INCLUDEPATH += D:/zl/OpenCV454/include
+    LIBS += -LD:/zl/OpenCV454 -llibopencv_world454
+}
+```
+- 自行下载 OpenCV 4.5.4 Windows 版，解压后将 D:/zl/OpenCV454 替换为你的解压根目录；
+- 项目内置 lib/ 文件夹存放运行必需两个 DLL：opencv_world454.dll、libgomp-1.dll，编译完成后脚本自动复制至 exe 输出目录。
+
+**Android 端**
+```pro
+android {
+    OPENCV_ANDROID_SDK = D:/zl/opencv-4.5.4-android-sdk/OpenCV-android-sdk/sdk/native
+}
+```
+- 自行下载 OpenCV 4.5.4 Android SDK，替换上述路径为本地 SDK 根目录；
+- Android 打包时会自动内置对应平台 OpenCV so 库。
+
+### 3. Windows 完整编译运行流程
+Qt Creator 打开 ImageQuality.pro，修改 .pro 中 OpenCV 本地路径；  
+切换 Release 构建套件，执行构建；编译完成自动将 lib 内 DLL 复制至输出目录；  
+打开 Qt 终端，进入本地生成的 build/release 目录，执行命令补齐 Qt 运行库：
+```pro
+windeployqt ImageQuality.exe
+```
+运行 ImageQuality.exe，打开图片即可执行画质分析  
+如需直接分发程序：将完整 build/release 文件夹压缩即可，无需额外配置环境。
+
+### 4. Android 打包流程
+配置 Qt Android 套件、NDK、SDK 环境，修改 .pro 内 Android OpenCV SDK 路径；  
+构建 Release，执行 Android 打包，生成 APK 安装包；  
+安卓设备安装 APK 后可直接本地读取相册图片做画质评估。
+
+
+
 
 
