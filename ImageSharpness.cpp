@@ -328,17 +328,15 @@ QPair<double, double> ImageSharpness::calcOverUnderExposureRatio(const QImage &i
     double darkCount = 0.0;
     double brightCount = 0.0;
 
-    for(int i=0;i<=50;i++)
+    for(int i=0; i<=50; i++)
         darkCount += hist.at<float>(i);
 
-    for(int i=206;i<256;i++)
+    for(int i=206; i<256; i++)
         brightCount += hist.at<float>(i);
 
-    double darkRatio =
-        darkCount / totalPixel;
+    double darkRatio = darkCount / totalPixel;
 
-    double brightRatio =
-        brightCount / totalPixel;
+    double brightRatio = brightCount / totalPixel;
 
     return {darkRatio, brightRatio};
 }
