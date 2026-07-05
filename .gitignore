@@ -9,11 +9,18 @@ Makefile*
 moc_*.cpp
 ui_*.h
 
-# 编译产物
-*.exe
-*.dll
+# 编译产物：只忽略编译目录内的dll、exe，不屏蔽项目lib文件夹
+build/*.exe
+build/*.dll
+debug/*.exe
+debug/*.dll
+release/*.exe
+release/*.dll
 *.obj
 *.o
+
+# 放行项目根目录lib下所有dll（关键）
+!lib/*.dll
 
 # 系统垃圾文件
 Thumbs.db
