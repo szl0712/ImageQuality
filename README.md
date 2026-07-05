@@ -111,11 +111,7 @@ windeployqt ImageQuality.exe
 如需直接分发程序：将完整 build/release 文件夹压缩即可，无需额外配置环境。
 
 ### 4. Android 打包流程
-配置 Qt Android 套件、NDK、SDK 环境，修改 .pro 内 Android OpenCV SDK 路径；  
-构建 Release，执行 Android 打包，生成 APK 安装包；  
-安卓设备安装 APK 后可直接本地读取相册图片做画质评估。
-
-
-
-
+配置 Qt Android 编译套件、配套 JDK、NDK、SDK 完整编译环境，在项目 .pro 文件内配置 Android 平台 OpenCV SDK 头文件与对应 CPU 架构库文件路径；  
+执行 Debug 模式构建，完成编译后调用 Android 部署工具打包生成 Debug 版本 APK 安装包；  
+将 APK 安装至安卓真机，可直接读取设备本地相册图片完成图像画质评估。  
 
